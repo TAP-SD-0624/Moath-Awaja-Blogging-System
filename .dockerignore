@@ -1,7 +1,3 @@
-node_modules
-dist
-.env
-
 # Ignore node modules
 node_modules
 npm-debug.log
