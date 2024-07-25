@@ -5,7 +5,7 @@ jest.mock('../../src/models/user.model', () => {
   return {
     create: jest.fn(),
     findOne: jest.fn(),
-    findByPk: jest.fn(),
+    findByPk: jest.fn(), 
     destroy: jest.fn(),
   };
 });

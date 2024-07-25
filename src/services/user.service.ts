@@ -1,14 +1,15 @@
 import User from '../models/user.model';
+import bcrypt from 'bcrypt';
 
 class UserService {
 
     public static async createUser(data: Partial<User>): Promise<User> {
-        console.log('Data to create user:', data);
-        return await User.create(data);
+        const hashedPassword = await bcrypt.hash(data.password as string, 10);
+        const userData = { ...data, password: hashedPassword };
+        return await User.create(userData);
     }
 
     public static async getUserByEmail(email: string): Promise<User | null> {
-        console.log('Email to find user:', email);
         return await User.findOne({ where: { email } });
     }
     public static async getUsers(): Promise<User[]> {

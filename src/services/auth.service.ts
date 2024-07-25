@@ -12,14 +12,12 @@ class AuthService {
         if (!user || !(await bcrypt.compare(password, user.password))) {
             throw new Error('Invalid credentials');
         }
-    
-        const token = jwt.sign({ id: user.id }, 'secret', { expiresIn: '48h' });
+
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '48h' });
         return token;
     }
 
     public static async register(username: string, email: string, password: string): Promise<User> {
-        console.log('Data to create user:', { username, email, password });
-
         const user = await UserService.getUserByEmail(email);
         if (user) {
             throw new Error('User already exists');
