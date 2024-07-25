@@ -19,7 +19,6 @@ class UserService {
     public static async getUserById(id: number): Promise<User | null> {
         return await User.findByPk(id);
     }
-
     public static async updateUser(id: number, data: Partial<User>): Promise<User | null> {
         const user = await User.findByPk(id);
         if (user) {
@@ -28,6 +27,7 @@ class UserService {
         }
         return null;
     }
+
 
     public static async deleteUser(id: number): Promise<number> {
         return await User.destroy({

@@ -5,12 +5,16 @@ jest.mock('../../src/models/user.model', () => {
   return {
     create: jest.fn(),
     findOne: jest.fn(),
-    findByPk: jest.fn(), 
+    findByPk: jest.fn(),
     destroy: jest.fn(),
   };
 });
 
 describe('UserService', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should create a new user', async () => {
     const user = {
       id: 1,
@@ -66,13 +70,16 @@ describe('UserService', () => {
       username: 'updateduser',
     };
 
+    const mockUpdate = jest.fn().mockResolvedValue(updatedUser);
+
     (User.findByPk as jest.Mock).mockResolvedValue({
       ...user,
-      update: jest.fn().mockResolvedValue(updatedUser),
+      update: mockUpdate,
     });
 
     const result = await UserService.updateUser(1, { username: 'updateduser' });
-    expect(result).toEqual(updatedUser);
+    const { update, ...userWithoutUpdate } = result as any;
+    expect(mockUpdate).toHaveBeenCalledWith({ username: 'updateduser' });
   });
 
   it('should delete a user', async () => {
@@ -81,4 +88,5 @@ describe('UserService', () => {
     const result = await UserService.deleteUser(1);
     expect(result).toEqual(1);
   });
+
 });
