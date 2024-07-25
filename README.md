@@ -11,6 +11,9 @@ Blogging System is a RESTful API built using Node.js, Express.js, and TypeScript
 - **Blog Post Management**: CRUD operations for blog posts.
 - **Category Management**: Assign categories to posts.
 - **Comment System**: Users can comment on posts.
+- **Automated Testing**: Unit tests using Jest.
+- **CI/CD Integration**: GitHub Actions for continuous integration and deployment.
+- **Docker Support**: Containerized application for easy deployment.
 
 ## Technologies Used
 
@@ -19,7 +22,9 @@ Blogging System is a RESTful API built using Node.js, Express.js, and TypeScript
 - **TypeScript**: Typed superset of JavaScript for enhanced code quality.
 - **Sequelize**: ORM for interacting with MySQL database.
 - **MySQL**: Relational database management system.
-
+- **Jest**: Testing framework for unit tests.
+- **GitHub Actions**: CI/CD workflows for continuous integration and deployment.
+- **Docker**: Containerization platform for deploying applications.
 
 ## Installation
 
@@ -82,6 +87,24 @@ npm test
 ### Comments
 - **GET /api/posts/:postId/comments**: Get all comments for a post.
 - **POST /api/posts/:postId/comments**: Add a comment to a post.
+
+## CI/CD with GitHub Actions
+
+The project includes a GitHub Actions workflow for continuous integration and deployment. The workflow runs tests and builds the application on every push to the `main` branch.
+
+## Docker Deployment
+
+To deploy the application using Docker, follow these steps:
+
+1. **Build the Docker Image**:
+   \`\`\`bash
+   docker build -t blogging-system .
+   \`\`\`
+
+2. **Run the Docker Container**:
+   \`\`\`bash
+   docker run -p 5000:5000 --env-file .env blogging-system
+   \`\`\`
 
 ## Contributing
 
