@@ -13,7 +13,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
-app.use('/api', authRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/category', categoryRoutes);
