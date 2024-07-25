@@ -22,9 +22,6 @@ coverage
 .env.test.local
 .env.production.local
 
-# Ignore test files
-tests
-__tests__
 
 # Ignore git files
 .git
