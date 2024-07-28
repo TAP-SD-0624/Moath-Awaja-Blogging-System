@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import UserService from '../services/user.service';
+import bcrypt from 'bcrypt';
 
 class UserController {
 
@@ -17,12 +18,16 @@ class UserController {
     public static async getUsersController(req: Request, res: Response) {
         try {
             const users = await UserService.getUsers();
-            return res.status(200).json(users);
+            const usersWithoutPassword = users.map(user => {
+                const { password, ...userWithoutPassword } = user;
+                return userWithoutPassword;
+            });
+            return res.status(200).json(usersWithoutPassword);
         } catch (error) {
             return res.status(500).json({ error: (error as Error).message });
         }
     }
-
+    
     // Controller to get a user by Id
     public static async getUserByIdController(req: Request, res: Response) {
         try {
@@ -39,7 +44,11 @@ class UserController {
     // Controller to update a user
     public static async updateUserController(req: Request, res: Response) {
         try {
-            const user = await UserService.updateUser(Number(req.params.id), req.body);
+            const { password, ...rest } = req.body;
+            if (password) {
+                req.body.password = await bcrypt.hash(password, 10);
+            }
+            const user = await UserService.updateUser(Number(req.params.id), rest);
             if (user) {
                 return res.status(200).json(user);
             }
@@ -48,6 +57,7 @@ class UserController {
             return res.status(500).json({ error: (error as Error).message });
         }
     }
+    
 
     // Controller to delete a user
     public static async deleteUserController(req: Request, res: Response) {

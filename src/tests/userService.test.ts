@@ -78,8 +78,8 @@ describe('UserService', () => {
     });
 
     const result = await UserService.updateUser(1, { username: 'updateduser' });
-    const { update, ...userWithoutUpdate } = result as any;
     expect(mockUpdate).toHaveBeenCalledWith({ username: 'updateduser' });
+    expect(result?.username).toBe('updateduser');
   });
 
   it('should delete a user', async () => {
@@ -88,5 +88,4 @@ describe('UserService', () => {
     const result = await UserService.deleteUser(1);
     expect(result).toEqual(1);
   });
-
 });

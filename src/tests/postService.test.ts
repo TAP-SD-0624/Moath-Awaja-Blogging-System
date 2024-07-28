@@ -21,6 +21,10 @@ jest.mock('../../src/models/comment.model');
 jest.mock('../../src/models/postCategory.model');
 
 describe('PostService', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should create a new post', async () => {
     const post = {
       id: 1,

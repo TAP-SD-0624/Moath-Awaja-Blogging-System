@@ -12,6 +12,10 @@ jest.mock('../../src/models/category.model', () => {
 });
 
 describe('CategoryService', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should create a new category', async () => {
     const category = {
       id: 1,

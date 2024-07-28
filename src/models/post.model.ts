@@ -9,7 +9,7 @@ class Post extends Model {
     public title!: string;
     public content!: string;
     public userId!: number;
-    public readonly categories?: Category[]; // Add this line to define the categories association
+    public readonly categories?: Category[];
 }
 
 Post.init({

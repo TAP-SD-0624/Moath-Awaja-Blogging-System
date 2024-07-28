@@ -6,9 +6,9 @@ import authMiddleware from '../middlewares/auth.middleware';
 const router = Router();
 
 router.post('/', authMiddleware,CommentController.createComment);
-router.get('/', CommentController.getComments);
-router.get('/:commentId', CommentController.getCommentById);
-router.put('/:commentId', CommentController.updateComment);
-router.delete('/:commentId', CommentController.deleteComment);
+router.get('/', authMiddleware, CommentController.getComments);
+router.get('/:commentId',authMiddleware, CommentController.getCommentById);
+router.put('/:commentId', authMiddleware,CommentController.updateComment);
+router.delete('/:commentId',authMiddleware, CommentController.deleteComment);
 
 export default router;

@@ -15,6 +15,10 @@ jest.mock('../../src/models/comment.model', () => {
 jest.mock('../../src/models/user.model');
 
 describe('CommentService', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should create a new comment', async () => {
     const comment = {
       id: 1,

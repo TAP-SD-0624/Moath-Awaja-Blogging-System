@@ -11,20 +11,22 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
     }
 
     if (AuthService.isTokenBlacklisted(token)) {
-        return res.status(401).json({ error: 'Unauthorized - Token is blacklisted' });
+        return res.status(401).json({ error: 'Unauthorize' });
     }
 
     try {
-        const decoded = jwt.verify(token, 'secret') as { id: number };
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || "jwt_secret") as { id: number, role: string };
         const user = await User.findByPk(decoded.id);
 
+        console.log('User:', user);
         if (!user) {
             return res.status(401).json({ error: 'Unauthorized' });
         }
 
         (req as any).user = user;
         next();
-    } catch (error ) {
+    } catch (error) {
+
         return res.status(401).json({ error: 'Unauthorized' });
     }
 };

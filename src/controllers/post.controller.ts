@@ -10,9 +10,6 @@ interface CustomRequest extends Request {
 class PostController {
     public static async createPost(req: CustomRequest, res: Response): Promise<Response> {
         try {
-            if (!req.user) {
-                return res.status(401).json({ message: 'Unauthorized' });
-            }
             const post = await PostService.createPost(req.body, req.user.id);
             return res.status(201).json(post);
         } catch (error: any) {
