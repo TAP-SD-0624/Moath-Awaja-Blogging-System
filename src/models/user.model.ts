@@ -7,6 +7,7 @@ class User extends Model {
     public username!: string;
     public email!: string;
     public password!: string;
+    public role!: string;
 
     public async validPassword(password: string): Promise<boolean> {
         return await bcrypt.compare(password, this.password);
@@ -36,21 +37,15 @@ User.init({
         type: DataTypes.STRING,
         allowNull: false,
     },
+    role:{
+        type: DataTypes.STRING,
+        allowNull:false,
+        defaultValue:"user"
+    }
 }, {
     sequelize,
     modelName: 'User',
-    hooks: {
-        beforeCreate: async (user: User) => {
-            const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(user.password, salt);
-        },
-        beforeUpdate: async (user: User) => {
-            if (user.changed('password')) {
-                const salt = await bcrypt.genSalt(10);
-                user.password = await bcrypt.hash(user.password, salt);
-            }
-        }
-    }
+    tableName: 'users',
 });
 
 export default User;

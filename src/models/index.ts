@@ -20,21 +20,27 @@ Comment.belongsTo(User, { foreignKey: 'userId' });
 
 async function createTables() {
   try {
+    console.log('Dropping tables...');
+    
     // Dropping tables in reverse order to avoid foreign key constraints issues
     await sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
-    await Comment.drop();
-    await PostCategory.drop();
-    await Post.drop();
-    await Category.drop();
-    await User.drop();
+    
+    await Comment.drop().then(() => console.log('Dropped Comments table'));
+    await PostCategory.drop().then(() => console.log('Dropped PostCategories table'));
+    await Post.drop().then(() => console.log('Dropped Posts table'));
+    await Category.drop().then(() => console.log('Dropped Categories table'));
+    await User.drop().then(() => console.log('Dropped Users table'));
+    
     await sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
+    console.log('Syncing tables...');
+
     // Syncing tables in the correct order
-    await User.sync();
-    await Category.sync();
-    await Post.sync();
-    await PostCategory.sync();
-    await Comment.sync();
+    await User.sync({ force: true }).then(() => console.log('Synced Users table'));
+    await Category.sync({ force: true }).then(() => console.log('Synced Categories table'));
+    await Post.sync({ force: true }).then(() => console.log('Synced Posts table'));
+    await PostCategory.sync({ force: true }).then(() => console.log('Synced PostCategories table'));
+    await Comment.sync({ force: true }).then(() => console.log('Synced Comments table'));
 
     console.log('Database & tables created!');
   } catch (error) {

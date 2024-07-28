@@ -1,6 +1,6 @@
 import UserService from '../services/user.service';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt'
 import User from '../models/user.model';
 
 const tokenBlacklist: Set<string> = new Set();
@@ -9,20 +9,23 @@ class AuthService {
     public static async login(email: string, password: string) {
         const user = await UserService.getUserByEmail(email);
 
-        if (!user || !(await bcrypt.compare(password, user.password))) {
+        if (!user) {
             throw new Error('Invalid credentials');
         }
-
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '48h' });
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            throw new Error('Invalid credentials');
+        }
+        const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET || "jwt_secret" as string, { expiresIn: '7d' });
         return token;
     }
 
-    public static async register(username: string, email: string, password: string): Promise<User> {
+    public static async register(username: string, email: string, password: string, role: string): Promise<User> {
         const user = await UserService.getUserByEmail(email);
         if (user) {
             throw new Error('User already exists');
         }
-        return await UserService.createUser({ username, email, password });
+        return await UserService.createUser({ username, email, password, role });
     }
 
     // Function to logout user

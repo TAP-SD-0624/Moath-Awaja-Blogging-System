@@ -2,20 +2,21 @@ import { Request, Response } from "express";
 import AuthService from "../services/auth.service";
 
 class AuthController {
-    public static  async login(req: Request, res: Response) {
+    public static async login(req: Request, res: Response) {
         const { email, password } = req.body;
         try {
             const token = await AuthService.login(email, password);
             res.status(200).json({ token });
         } catch (error: any) {
-            res.status(401).json({ error: error.message });
+            res.status(401).json({ error: 'Invalid credentials' }); 
         }
     }
+    
 
     public static async register(req: Request, res: Response) {
-        const {username, email, password } = req.body;
+        const {username, email, password ,role} = req.body;
         try {
-            await AuthService.register(username ,email, password);
+            await AuthService.register(username ,email, password,role);
             res.status(200).json({ message: 'User created' });
         } catch (error: any) {
             res.status(400).json({ error: error.message });

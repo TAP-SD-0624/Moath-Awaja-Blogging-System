@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import CommentService from '../services/comment.service';
 
-
 interface CustomRequest extends Request {
-    user?: any;
+    user?: { id: number; role: string };
 }
 
 
